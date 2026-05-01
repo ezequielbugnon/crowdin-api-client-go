@@ -29,6 +29,7 @@ type (
 		SkipApprovedTranslations      *bool    `json:"skipApprovedTranslations,omitempty"`
 		TranslateUntranslatedOnly     *bool    `json:"translateUntranslatedOnly,omitempty"`
 		TranslateWithPerfectMatchOnly *bool    `json:"translateWithPerfectMatchOnly,omitempty"`
+		Priority                      *string  `json:"priority,omitempty"`
 	}
 
 	PreTranslationReport struct {
@@ -540,3 +541,27 @@ type (
 		Data *DownloadLink `json:"data"`
 	}
 )
+
+type BatchPreTranslationRequest struct {
+	Op    string      `json:"op"`
+	Path  string      `json:"path"`
+	Value interface{} `json:"value"`
+}
+
+func (b *BatchPreTranslationRequest) Validate() error {
+	if b == nil {
+		return errors.New("patch operation is nil")
+	}
+	if b.Op == "" {
+		return errors.New("op is required")
+	}
+	if b.Path == "" {
+		return errors.New("path is required")
+	}
+
+	if b.Value == nil {
+		return errors.New("value is required")
+	}
+
+	return nil
+}
